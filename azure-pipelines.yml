@@ -3,9 +3,18 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
+# When manually running the pipeline, you can select whether it succeeds or fails.
+parameters:
+- name: succeed
+  displayName: Succeed or fail
+  type: boolean
+  default: false
+  
 trigger:
 - main
 
+pool:
+  vmImage: ubuntu-latest
 # Build across multiple platforms
 #strategy:
 #  matrix:
@@ -31,35 +40,61 @@ trigger:
 #  maxParallel: 2
 
 # Build on multiple platforms and versions
-strategy:
-  matrix:
-    jdk10_linux:
-      imageName: "ubuntu-latest"
-      jdkVersion: "1.10"
-    jdk11_windows:
-      imageName: "windows-latest"
-      jdkVersion: "1.11"
-  maxParallel: 2
+# strategy:
+#   matrix:
+#     jdk10_linux:
+#       imageName: "ubuntu-latest"
+#       jdkVersion: "1.10"
+#     jdk11_windows:
+#       imageName: "windows-latest"
+#       jdkVersion: "1.11"
+#   maxParallel: 2
 
-pool:
-  vmImage: $(imageName)
-  
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+# pool:
+#   vmImage: $(imageName)
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
-  
-- task: Maven@4
-  inputs:
-    mavenPomFile: "pom.xml"
-    mavenOptions: "-Xmx3072m"
-    javaHomeOption: "JDKVersion"
-    jdkVersionOption: $(jdkVersion)
-    jdkArchitectureOption: "x64"
-    publishJUnitResults: true
-    testResultsFiles: "**/TEST-*.xml"
-    goals: "package"  
+jobs:
+- job: Work
+  steps:
+  - script: echo Hello, world!
+    displayName: 'Run a one-line script'
+
+  - script: |
+      echo Add other tasks to build, test, and deploy your project.
+      echo See https://aka.ms/yaml
+    displayName: 'Run a multi-line script'
+
+  # This malformed command causes the job to fail
+  # Only run this command if the succeed variable is set to false
+  - script: git clone malformed input
+    condition: eq(${{ parameters.succeed }}, false)
+
+- job: Maven build
+  dependsOn: Work
+  condition: succeeded()
+  steps:    
+  - task: Maven@4
+    inputs:
+      mavenPomFile: "pom.xml"
+      mavenOptions: "-Xmx3072m"
+      javaHomeOption: "JDKVersion"
+      jdkVersionOption: $(jdkVersion)
+      jdkArchitectureOption: "x64"
+      publishJUnitResults: true
+      testResultsFiles: "**/TEST-*.xml"
+    goals: "package"
+
+# This job creates a work item, and only runs if the previous job failed
+- job: ErrorHandler
+  dependsOn: Work
+  condition: failed()
+  steps: 
+  - bash: |
+      az boards work-item create \
+        --title "Build $(build.buildNumber) failed" \
+        --type bug \
+        --org $(System.TeamFoundationCollectionUri) \
+        --project $(System.TeamProject)
+    env: 
+      AZURE_DEVOPS_EXT_PAT: $(System.AccessToken)
+    displayName: 'Create work item on failure'

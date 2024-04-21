@@ -69,7 +69,7 @@ jobs:
   - script: git clone malformed input
     condition: eq(${{ parameters.succeed }}, false)
 
-- job: Maven build
+- job: MavenBuild
   dependsOn: Work
   condition: succeeded()
   steps:    

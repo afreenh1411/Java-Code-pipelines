@@ -57,6 +57,8 @@ pool:
 # pool:
 #   vmImage: $(imageName)
 
+- template: stages-template.yml
+
 jobs:
 - job: Work
   steps:

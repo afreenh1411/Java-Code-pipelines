@@ -15,9 +15,7 @@ trigger:
 - main
 
 variables:
-- template: vars.yml
   jdkVersion: "1.11"
-
     
 pool:
   vmImage: ubuntu-latest
@@ -63,6 +61,8 @@ stages:
 - stage: General
   jobs:
   - job: Work
+    variables:
+    - template: vars.yml
     steps:
     - script: echo Hello, world!
       displayName: 'Run a one-line script'

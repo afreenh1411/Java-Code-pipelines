@@ -131,5 +131,9 @@ stages:
       displayName: 'Run npm install'
       inputs:
         verbose: false
-
+        #command: 'custom' # This is required when you have package.json on different folder path
+        #workingDir: '$(Build.SourcesDirectory)/web/app'
+        #customCommand: 'run test'
+      continueOnError: true
+      
 - template: stages-template.yml # Template reference

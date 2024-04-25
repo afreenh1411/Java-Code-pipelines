@@ -70,7 +70,7 @@ jobs:
   #- script: git clone malformed input
   #  condition: eq(${{ parameters.succeed }}, false)
 
-- job: Maven build
+- job: MavenBuild
   dependsOn: Work
   condition: succeeded()
   steps:    
@@ -93,7 +93,7 @@ jobs:
   - bash: |
       az boards work-item create \
         --title "Build $(build.buildNumber) failed" \
-        --type bug \
+        --type issue \
         --org $(System.TeamFoundationCollectionUri) \
         --project $(System.TeamProject)
     env: 

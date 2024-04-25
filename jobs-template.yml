@@ -1,0 +1,6 @@
+jobs:
+- job: ubuntu
+  pool:
+    vmImage: 'ubuntu-latest'
+  steps:
+  - bash: echo "Hello ubuntu! this is a job template"  

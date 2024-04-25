@@ -1,3 +1,14 @@
-# File: vars.yml
+# File: vars.yml 
+# File: templates/package-release-with-params.yml
+
+parameters:
+- name: DIRECTORY 
+  type: string
+  default: "." # defaults for any parameters that specified with "." (current directory)
+
 variables:
-  favoriteVeggie: 'brussels sprouts'
+- name: favoriteVeggie
+  value: 'brussels sprouts'
+  
+- name: RELEASE_COMMAND
+  value: 'parameter value-  ${{ parameters.DIRECTORY }}''

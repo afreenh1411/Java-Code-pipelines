@@ -1,4 +1,5 @@
 steps:
-- script: npm install
-- script: yarn install
-- script: npm run compile
+- bash: echo "This is steps template"
+#- script: npm install
+#- script: yarn install
+#- script: npm run compile

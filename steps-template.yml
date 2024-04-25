@@ -1,5 +1,15 @@
+parameters:
+- name: 'myTempName'
+  default: 'notgiven'
+- name: runExtendedTests
+  type: boolean
+  default: false
+  
 steps:
-- bash: echo "This is steps template"
+- bash: echo "This is steps template ${{parameters.myTempName}}"
+- ${{ if eq(parameters.runExtendedTests, true) }}:
+  - bash: echo ${{parameters.runExtendedTests}}
+  
 #- script: npm install
 #- script: yarn install
 #- script: npm run compile

@@ -16,6 +16,7 @@ trigger:
 
 variables:
   jdkVersion: "1.11"
+- template: vars.yml  
   
 pool:
   vmImage: ubuntu-latest
@@ -64,7 +65,9 @@ stages:
     steps:
     - script: echo Hello, world!
       displayName: 'Run a one-line script'
-
+    steps:
+    - script: echo My favorite vegetable is ${{ variables.favoriteVeggie }}.
+    
     - script: |
         echo Add other tasks to build, test, and deploy your project.
         echo See https://aka.ms/yaml
@@ -119,6 +122,8 @@ stages:
   - job: npminstall
     steps:
     - task: Npm@1
+      displayName: 'Run npm install'
       inputs:
-        command: 'install'
+        verbose: false
+
 - template: stages-template.yml # Template reference

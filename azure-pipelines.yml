@@ -57,7 +57,7 @@ pool:
 # pool:
 #   vmImage: $(imageName)
 
-stages:
+stages: 1
 - stage: General
   jobs:
   - job: Work
@@ -120,7 +120,7 @@ stages:
         command: 'install'
 - template: stages-template.yml # Template reference
 
-stages:
+stages: 2
 - stage: testingmuliplestages
   jobs: 
   - job: stages

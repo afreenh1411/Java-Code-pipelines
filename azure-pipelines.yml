@@ -63,11 +63,15 @@ stages:
   - job: Work
     variables:
     - template: vars.yml
+      parameters:
+        DIRECTORY: "azure/checker"
+        
     steps:
     - script: echo Hello, world!
       displayName: 'Run a one-line script'
     
     - script: echo My favorite vegetable is ${{ variables.favoriteVeggie }}.
+    - bash: $(RELEASE_COMMAND) #output release command
     
     - script: |
         echo Add other tasks to build, test, and deploy your project.

@@ -15,7 +15,7 @@ trigger:
 - main
 
 variables:
-  jdkVersion: "1.10"
+  jdkVersion: "1.11"
   
 pool:
   vmImage: ubuntu-latest
@@ -108,6 +108,9 @@ stages:
   - job: TemplateTesting
     steps:
       - template: steps-template.yml #template reference
+        parameters:
+          myTempName: 'afreen'
+          runExtendedTests: true
       
   - template: jobs-template.yml # Template reference
 

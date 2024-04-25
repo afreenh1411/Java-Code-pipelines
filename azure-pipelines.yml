@@ -57,6 +57,15 @@ pool:
 # pool:
 #   vmImage: $(imageName)
 
+stages:
+- stage: Install
+  jobs: 
+  - job: npminstall
+    steps:
+    - task: Npm@1
+      inputs:
+        command: 'install'
+- template: stages-template.yml 
 
 jobs:
 - job: Work
@@ -109,13 +118,3 @@ jobs:
     - template: steps-template.yml #template reference
     
 - template: jobs-template.yml # Template reference
-
-stages:
-- stage: Install
-  jobs: 
-  - job: npminstall
-    steps:
-    - task: Npm@1
-      inputs:
-        command: 'install'
-- template: stages-template.yml        

@@ -15,8 +15,9 @@ trigger:
 - main
 
 variables:
+- template: vars.yml
   jdkVersion: "1.11"
-- template: vars.yml  
+  
   
 pool:
   vmImage: ubuntu-latest

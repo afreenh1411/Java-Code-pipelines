@@ -3,13 +3,14 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
-# When manually running the pipeline, you can select whether it succeeds or fails.
+# When manually running the pipeline, you can select whether it
+# succeeds or fails.
 parameters:
 - name: succeed
   displayName: Succeed or fail
   type: boolean
   default: false
-  
+
 trigger:
 - main
 
@@ -66,10 +67,10 @@ jobs:
 
   # This malformed command causes the job to fail
   # Only run this command if the succeed variable is set to false
-  - script: git clone malformed input
-    condition: eq(${{ parameters.succeed }}, false)
+  #- script: git clone malformed input
+  #  condition: eq(${{ parameters.succeed }}, false)
 
-- job: MavenBuild
+- job: Maven build
   dependsOn: Work
   condition: succeeded()
   steps:    
@@ -92,9 +93,16 @@ jobs:
   - bash: |
       az boards work-item create \
         --title "Build $(build.buildNumber) failed" \
-        --type issue \
+        --type bug \
         --org $(System.TeamFoundationCollectionUri) \
         --project $(System.TeamProject)
     env: 
       AZURE_DEVOPS_EXT_PAT: $(System.AccessToken)
     displayName: 'Create work item on failure'
+
+- job: TemplateTesting
+  steps:
+    - template: steps-template.yml #template reference
+    
+- template: jobs-template.yml # Template reference
+

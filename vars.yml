@@ -11,4 +11,4 @@ variables:
   value: 'brussels sprouts'
   
 - name: RELEASE_COMMAND
-  value: 'parameter value-  ${{ parameters.DIRECTORY }}''
+  value: 'parameter value-  ${{ parameters.DIRECTORY }}'

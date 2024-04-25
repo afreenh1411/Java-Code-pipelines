@@ -14,6 +14,9 @@ parameters:
 trigger:
 - main
 
+variables:
+  jdkVersion: "1.10"
+  
 pool:
   vmImage: ubuntu-latest
 # Build across multiple platforms

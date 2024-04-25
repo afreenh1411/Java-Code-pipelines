@@ -57,7 +57,7 @@ pool:
 # pool:
 #   vmImage: $(imageName)
 
-stages: S1
+stages:
 - stage: General
   jobs:
   - job: Work
@@ -119,10 +119,3 @@ stages: S1
       inputs:
         command: 'install'
 - template: stages-template.yml # Template reference
-
-stages: S2
-- stage: testingmuliplestages
-  jobs: 
-  - job: stages
-    steps:
-    - bash: echo "multiple stages"
